@@ -32,6 +32,9 @@ inputs:
   water:
     description: Water artwork, ocean (default) or original
     default: ocean
+  graph-theme:
+    description: Calendar colors, blue (default) or github for GitHub green
+    default: blue
   auto-compress:
     description: Automatically lower scale then FPS to fit GIF limits without skipping day cells
     default: 'true'
@@ -72,6 +75,7 @@ runs:
         JET_JETS: ${{ inputs.jets }}
         JET_CARRIER: ${{ inputs.carrier }}
         JET_WATER: ${{ inputs.water }}
+        JET_GRAPH_THEME: ${{ inputs.graph-theme }}
         JET_AUTO_COMPRESS: ${{ inputs.auto-compress }}
         JET_DEMO: ${{ inputs.demo }}
         JET_SEED: ${{ inputs.seed }}

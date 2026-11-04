@@ -16,6 +16,7 @@ def test_live_render_automatically_fits_without_recollecting_or_skipping_targets
     monkeypatch, tmp_path, capsys
 ):
     calendar = demo_calendar()
+    expected_dates = {day.date.isoformat() for day in calendar.days if day.commits}
     collected = []
 
     def collect(*args, **kwargs):
@@ -47,9 +48,9 @@ def test_live_render_automatically_fits_without_recollecting_or_skipping_targets
     assert report["requested_fps"] == report["fps"] == 20
     assert report["seed"] == "git-jet-loop" and report["source"] == "live"
     assert report["carrier"] == "lincoln"
-    assert report["attacks"] == report["active_days"] == 14
+    assert report["attacks"] == report["active_days"] == len(expected_dates)
     assert sum(t["commits"] for t in report["targets"]) == calendar.total
-    assert len({t["date"] for t in report["targets"]}) == 14
+    assert {t["date"] for t in report["targets"]} == expected_dates
     assert report["gif_bytes"] <= exporter.MAX_BYTES and report["decoded_frames_match"]
     assert json.loads((tmp_path / "report.json").read_text()) == report
     assert "retrying at 480x320, 20 FPS" in captured.err
@@ -87,6 +88,7 @@ def test_scale_is_reduced_before_fps_with_one_fresh_seed_and_all_targets(monkeyp
     seeds = []
     attempts = []
     calendar = demo_calendar()
+    expected_dates = {day.date for day in calendar.days if day.commits}
 
     def fresh_seed(size):
         seeds.append(size)
@@ -98,7 +100,9 @@ def test_scale_is_reduced_before_fps_with_one_fresh_seed_and_all_targets(monkeyp
         assert renderer.flight.seed == "keep-this-route" and renderer.jet_count == 3
         assert renderer.carrier == "classic"
         assert renderer.water == "original"
-        assert len(renderer.flight.strikes) == 14
+        assert renderer.graph_theme == "github"
+        assert len(renderer.flight.strikes) == len(expected_dates)
+        assert {s.cell.day.date for s in renderer.flight.strikes} == expected_dates
         assert sum(s.cell.day.commits for s in renderer.flight.strikes) == calendar.total
         if options.fps == 20:
             raise GifSizeLimitError("GIF exceeds 25 MB")
@@ -107,7 +111,13 @@ def test_scale_is_reduced_before_fps_with_one_fresh_seed_and_all_targets(monkeyp
     monkeypatch.setattr("git_jet.flight.secrets.token_hex", fresh_seed)
     monkeypatch.setattr(exporter, "export", fit)
     assert render_assets(
-        calendar, tmp_path, Options(), jets=3, carrier="classic", water="original"
+        calendar,
+        tmp_path,
+        Options(),
+        jets=3,
+        carrier="classic",
+        water="original",
+        graph_theme="github",
     ) == {"fps": 10}
     assert attempts == [Options(2, 20), Options(1, 20), Options(1, 10)]
     assert len(seeds) == 1

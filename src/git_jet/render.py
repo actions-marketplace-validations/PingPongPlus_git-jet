@@ -7,12 +7,14 @@ from PIL import Image, ImageDraw
 from .art import (
     CREAM,
     DEFAULT_CARRIER,
+    DEFAULT_GRAPH_THEME,
     GOLD,
     carrier_sprite,
     commit_tile,
     explosion_sprite,
     jet_sprite,
     validate_carrier,
+    validate_graph_theme,
 )
 from .calendar import Calendar
 from .flight import (
@@ -39,12 +41,14 @@ class Renderer:
         jets=1,
         carrier=DEFAULT_CARRIER,
         water=DEFAULT_WATER,
+        graph_theme=DEFAULT_GRAPH_THEME,
     ):
         if type(jets) is not int or not 1 <= jets <= 3:
             raise ValueError("jets must be an integer in 1..3")
         self.jet_count = jets
         self.carrier = validate_carrier(carrier)
         self.water = validate_water(water)
+        self.graph_theme = validate_graph_theme(graph_theme)
         self.calendar = calendar
         self.cells = calendar.cells()
         self.flight = (
@@ -74,7 +78,7 @@ class Renderer:
             hit = self.hit_by_date.get(cell.day.date) if cell.day else None
             cleared = hit is not None and frame >= hit and not self.flight.restored(cell, frame)
             image.alpha_composite(
-                commit_tile(level, cleared),
+                commit_tile(level, cleared, theme=self.graph_theme),
                 (GRID_X + cell.column * GRID_STEP, GRID_Y + cell.row * GRID_STEP),
             )
         return image

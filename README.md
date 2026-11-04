@@ -8,15 +8,15 @@ pixel explosions and a spinning radar. Runs with GitHub Actions.
 **Lincoln — default carrier**
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="examples/demo/git-jet.png?v=runway-queue-20261102">
-  <img src="examples/demo/git-jet.gif?v=runway-queue-20261102" width="960" alt="A pixel jet launches from a Lincoln-inspired carrier through rolling ocean water, with an angled runway, detailed island and spinning radar.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="examples/demo/git-jet.png?v=graph-theme-20261103">
+  <img src="examples/demo/git-jet.gif?v=graph-theme-20261103" width="960" alt="A pixel jet launches from a Lincoln-inspired carrier through rolling ocean water, with an angled runway, detailed island and spinning radar.">
 </picture>
 
-**Classic — original carrier**
+**Classic — original carrier with the green graph**
 
 <picture>
-  <source media="(prefers-reduced-motion: reduce)" srcset="examples/demo-classic/git-jet.png?v=runway-queue-20261102">
-  <img src="examples/demo-classic/git-jet.gif?v=runway-queue-20261102" width="960" alt="The original ivory-island carrier with a spinning radar and flowing ocean wake launches a pixel jet to clear the commit calendar.">
+  <source media="(prefers-reduced-motion: reduce)" srcset="examples/demo-classic/git-jet.png?v=graph-theme-20261103">
+  <img src="examples/demo-classic/git-jet.gif?v=graph-theme-20261103" width="960" alt="The original ivory-island carrier with a spinning radar and flowing ocean wake launches a pixel jet to clear a green commit calendar.">
 </picture>
 
 Choose `carrier: 'lincoln'` (default) or `carrier: 'classic'` in your workflow.
@@ -25,6 +25,11 @@ For the CLI, use `--carrier classic`. Both designs have the spinning radar.
 Choose `water: 'ocean'` (default) for the flowing ocean surface and wake, or
 `water: 'original'` for the original small wave patches. This works with either
 carrier. For the CLI, use `--water ocean` or `--water original`.
+
+Choose `graph-theme: 'github'` for GitHub green activity cells, as shown
+in the Classic demo. The default is `graph-theme: 'blue'`, shown in the Lincoln
+demo. Either graph theme works with either carrier and water style.
+For the CLI, use `--graph-theme github` or `--graph-theme blue`.
 
 Both demos show **three jets** and **56 synthetic commits across 14 active days**. Live mode uses your
 actual data. **One attack clears one day cell**, regardless of that day's count.
@@ -35,17 +40,22 @@ The jet returns to land, the calendar rebuilds, and the animation loops.
 1. Copy [this workflow](examples/profile-workflow.yml) into your profile repository
    as `.github/workflows/git-jet.yml`.
 2. Open **Actions → Git Jet → Run workflow**. It publishes images to `output`.
-3. Add this to your README, replacing both `YOUR_USERNAME` values:
+3. Add this to your README, replacing `YOUR_USERNAME` with your GitHub username:
 
 ```html
-<picture>
-  <source media="(prefers-reduced-motion: no-preference)"
-    srcset="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/output/git-jet.gif">
-  <img width="960"
-    src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/output/git-jet.png"
-    alt="My commit history cleared by a pixel jet">
-</picture>
+<a href="https://github.com/PingPongPlus/git-jet">
+  <picture>
+    <source media="(prefers-reduced-motion: no-preference)"
+      srcset="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/output/git-jet.gif">
+    <img width="960"
+      src="https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_USERNAME/output/git-jet.png"
+      alt="My commit history cleared by a pixel jet">
+  </picture>
+</a>
 ```
+
+Clicking the animation or its static fallback opens the Git Jet repository.
+Existing users can replace their image block with this snippet to add the link.
 
 Updates run **daily**. Set `days: '30'`, `'7'` or `'365'` under the generation
 step's `with:` section. The static PNG preserves the full calendar. Flight uses

@@ -55,6 +55,7 @@ def test_real_cached_calendar_exports_exact_frames_without_network(
     assert report["jets"] == jets and len(report["flights"]) == jets
     assert report["carrier"] == carrier
     assert report["water"] == water
+    assert report["graph_theme"] == "blue"
     assert sum(f["attacks"] for f in report["flights"]) == 2
     assert {t["jet"] for t in report["targets"]}.issubset(set(range(1, jets + 1)))
     renderer = Renderer(calendar, jets=jets, seed=report["seed"], carrier=carrier, water=water)

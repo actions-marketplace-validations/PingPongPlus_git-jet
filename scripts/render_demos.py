@@ -9,13 +9,17 @@ from git_jet.export import Options, render_assets
 def main():
     root = Path(__file__).resolve().parents[1]
     calendar = Calendar.read(root / "examples/demo/calendar.json")
-    for carrier, folder in (("lincoln", "demo"), ("classic", "demo-classic")):
+    for carrier, folder, graph_theme in (
+        ("lincoln", "demo", "blue"),
+        ("classic", "demo-classic", "github"),
+    ):
         report = render_assets(
             calendar,
             root / "examples" / folder,
             Options(),
             jets=3,
             carrier=carrier,
+            graph_theme=graph_theme,
             seed="git-jet-loop",
             source="demo",
         )

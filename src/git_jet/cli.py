@@ -7,7 +7,7 @@ import sys
 from datetime import date
 from pathlib import Path
 
-from .art import CARRIERS, DEFAULT_CARRIER
+from .art import CARRIERS, DEFAULT_CARRIER, DEFAULT_GRAPH_THEME, GRAPH_THEMES
 from .calendar import Calendar
 from .demo import demo_calendar
 from .export import Options, render_assets
@@ -43,6 +43,12 @@ def main(argv=None):
         choices=WATER_STYLES,
         default=DEFAULT_WATER,
         help="water artwork: ocean or original (default: ocean)",
+    )
+    render.add_argument(
+        "--graph-theme",
+        choices=GRAPH_THEMES,
+        default=DEFAULT_GRAPH_THEME,
+        help="calendar colors: blue (default) or github (green)",
     )
     render.add_argument(
         "--jets", type=int, choices=(1, 2, 3), default=1, help="simultaneous jets (default: 1)"
@@ -86,6 +92,7 @@ def main(argv=None):
                 jets=args.jets,
                 carrier=args.carrier,
                 water=args.water,
+                graph_theme=args.graph_theme,
                 seed=args.seed,
                 source=source_name,
                 auto_compress=args.auto_compress,

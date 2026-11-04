@@ -24,6 +24,7 @@ jobs:
           days: '365'
           carrier: lincoln # Choose lincoln (default) or classic.
           water: ocean # Choose ocean (default) or original for the old water.
+          graph-theme: blue # Choose blue (default) or github for green activity cells.
           jets: '1' # Choose 1, 2 or 3; more jets shorten busy calendars.
       - name: Publish README images
         env:

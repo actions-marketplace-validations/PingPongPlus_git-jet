@@ -39,7 +39,7 @@ class Options:
 def palette():
     samples = [
         *(art.carrier_sprite(carrier=carrier) for carrier in art.CARRIERS),
-        *(art.commit_tile(i) for i in range(5)),
+        *(art.commit_tile(i, theme=theme) for theme in art.GRAPH_THEMES for i in range(5)),
         *(art.explosion_sprite(i / 10) for i in range(10)),
         *(art.jet_sprite(0, thrust, bank) for thrust in range(3) for bank in (-1, 0, 1)),
     ]
@@ -139,6 +139,7 @@ def export(
             "jets": renderer.jet_count,
             "carrier": renderer.carrier,
             "water": renderer.water,
+            "graph_theme": renderer.graph_theme,
             "seed": renderer.flight.seed,
             "flights": [
                 {
@@ -190,6 +191,7 @@ def render_assets(
     jets=1,
     carrier=art.DEFAULT_CARRIER,
     water=DEFAULT_WATER,
+    graph_theme=art.DEFAULT_GRAPH_THEME,
     seed=None,
     source="live",
     auto_compress=True,
@@ -203,7 +205,13 @@ def render_assets(
     for fps in rates:
         try:
             renderer = Renderer(
-                calendar, fps=fps, seed=seed, jets=jets, carrier=carrier, water=water
+                calendar,
+                fps=fps,
+                seed=seed,
+                jets=jets,
+                carrier=carrier,
+                water=water,
+                graph_theme=graph_theme,
             )
             scales = (
                 range(options.scale, 0, -1)

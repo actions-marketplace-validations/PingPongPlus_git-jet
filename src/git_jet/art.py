@@ -16,8 +16,17 @@ WAVE = "#70b3ce"
 DEEP = "#39799c"
 FOAM = "#f1f4e8"
 GRID = ("#244252", "#28556d", "#39799c", "#70b3ce", "#bfe6eb")
+GITHUB_GRID = ("#30363d", "#0e4429", "#006d32", "#26a641", "#39d353")
+DEFAULT_GRAPH_THEME = "blue"
+GRAPH_THEMES = ("blue", "github")
 DEFAULT_CARRIER = "lincoln"
 CARRIERS = ("lincoln", "classic")
+
+
+def validate_graph_theme(graph_theme):
+    if not isinstance(graph_theme, str) or graph_theme not in GRAPH_THEMES:
+        raise ValueError("graph theme must be blue or github")
+    return graph_theme
 
 
 def validate_carrier(carrier):
@@ -340,10 +349,18 @@ def classic_carrier_sprite(t=0):
     return image
 
 
-def commit_tile(level, destroyed=False):
+def commit_tile(level, destroyed=False, *, theme=DEFAULT_GRAPH_THEME):
+    validate_graph_theme(theme)
     image = Image.new("RGBA", (7, 7))
     draw = ImageDraw.Draw(image)
     outline = [(1, 0), (5, 0), (6, 1), (6, 5), (5, 6), (1, 6), (0, 5), (0, 1)]
+    if theme == "github":
+        # Flat green activity squares with neutral, transparent empty cells.
+        active = level and not destroyed
+        draw.polygon(outline, fill=GITHUB_GRID[min(4, level)] if active else GITHUB_GRID[0])
+        if not active:
+            draw.rectangle((1, 1, 5, 5), fill=(0, 0, 0, 0))
+        return image
     draw.polygon(outline, fill=GRID[0])
     if level and not destroyed:
         draw.rectangle((1, 1, 5, 5), fill=GRID[min(4, level)])
