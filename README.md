@@ -123,4 +123,6 @@ never changes your default branch. Publishing requires `contents: write`.
 - [ ] Optional **one shot per individual commit** mode.
 - [ ] More carrier/jet/runway designs and configurable graph palettes, with artwork approval.
 
+Feel free to submit ideas by opening an issues I'm open to anything!
+
 [Artwork approvals](artwork/APPROVAL.md) · [Contributing](CONTRIBUTING.md) · [MIT](LICENSE)
